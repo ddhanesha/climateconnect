@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 from climateconnect_api.models import (
-    Availability, Role, UserProfile
+    Availability, Role, UserProfile, Skill
 )
 from organization.models import (
     ProjectStatus, Project, Organization
@@ -123,6 +123,19 @@ def create_project_test_data(number_of_rows: int):
             print("{} project already exists.".format(name))
 
 
+def create_skills_test_data(number_of_rows: int):
+    print("Create skills data...")
+    for i in range(number_of_rows):
+        name = "Skill {}".format(i)
+        key = name.replace(" ", "")
+        if not Skill.objects.filter(name=name).exists():
+            Skill.objects.create(
+                name=name, key=key, details="Test skills"
+            )
+            print("{} skill created".format(name))
+        else:
+            print("{} skill already exists".format(name))
+
 
 class Command(BaseCommand):
     help = "Creates test data of users availability to volunteer to an organization."
@@ -138,3 +151,4 @@ class Command(BaseCommand):
         create_project_status_test_data()
         create_organization_test_data(number_of_rows=number_of_rows)
         create_project_test_data(number_of_rows=number_of_rows)
+        create_skills_test_data(number_of_rows=number_of_rows)
